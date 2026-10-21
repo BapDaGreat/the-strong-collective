@@ -303,55 +303,6 @@ export function App() {
                   loading="eager"
                 />
               </div>
-
-              {/* Subtle floating format switcher on bottom-left when in website mode */}
-              {viewMode === 'website' && (
-                <div className="hidden lg:flex items-center gap-2 absolute bottom-4 left-8 z-20 bg-[#F7F3E8]/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#183D2D]/15 shadow-sm">
-                  <span className="text-[11px] font-bold tracking-[0.16em] uppercase text-[#183D2D]/70">
-                    Banner Format:
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setBannerVariant('clean-800')}
-                    className={`btn-press text-[11px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider ${
-                      bannerVariant === 'clean-800'
-                        ? 'bg-[#183D2D] text-[#F7F3E8]'
-                        : 'text-[#183D2D]/75 hover:text-[#183D2D]'
-                    }`}
-                  >
-                    1920×800 Clean
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setBannerVariant('watermarked-800')}
-                    className={`btn-press text-[11px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider ${
-                      bannerVariant === 'watermarked-800'
-                        ? 'bg-[#183D2D] text-[#F7F3E8]'
-                        : 'text-[#183D2D]/75 hover:text-[#183D2D]'
-                    }`}
-                  >
-                    Watermarked
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setBannerVariant('clean-1080')}
-                    className={`btn-press text-[11px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider ${
-                      bannerVariant === 'clean-1080'
-                        ? 'bg-[#183D2D] text-[#F7F3E8]'
-                        : 'text-[#183D2D]/75 hover:text-[#183D2D]'
-                    }`}
-                  >
-                    1920×1080 (16:9)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setBannerVariant('live-dom')}
-                    className="btn-press text-[11px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider text-[#183D2D]/75 hover:text-[#183D2D]"
-                  >
-                    Live HTML Text
-                  </button>
-                </div>
-              )}
             </div>
           ) : (
             /* LIVE RESPONSIVE DOM HERO BANNER */
@@ -386,42 +337,46 @@ export function App() {
                   </p>
                 </div>
               </div>
+            </div>
+          )}
 
-              {viewMode === 'website' && (
-                <div className="hidden lg:flex items-center gap-2 absolute bottom-4 left-8 z-20 bg-[#F7F3E8]/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#183D2D]/15 shadow-sm">
-                  <span className="text-[11px] font-bold tracking-[0.16em] uppercase text-[#183D2D]/70">
-                    Banner Format:
+          {/* Unobtrusive Banner Format Bar below the hero banner when Review Bar is visible */}
+          {viewMode === 'website' && showReviewBar && (
+            <div className="bg-[#EFE9D8] border-b border-[#183D2D]/10 py-2.5 px-4 sm:px-6 lg:px-8">
+              <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-[11px] font-bold tracking-[0.18em] uppercase text-[#183D2D]/70 mr-1">
+                    Banner Preview Format:
                   </span>
-                  <button
-                    type="button"
-                    onClick={() => setBannerVariant('clean-800')}
-                    className="btn-press text-[11px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider text-[#183D2D]/75 hover:text-[#183D2D]"
-                  >
-                    1920×800 Clean
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setBannerVariant('watermarked-800')}
-                    className="btn-press text-[11px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider text-[#183D2D]/75 hover:text-[#183D2D]"
-                  >
-                    Watermarked
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setBannerVariant('clean-1080')}
-                    className="btn-press text-[11px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider text-[#183D2D]/75 hover:text-[#183D2D]"
-                  >
-                    1920×1080 (16:9)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setBannerVariant('live-dom')}
-                    className="btn-press text-[11px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-[#183D2D] text-[#F7F3E8]"
-                  >
-                    Live HTML Text
-                  </button>
+                  {(
+                    [
+                      ['clean-800', '1920×800 Desktop Banner (Clean)'],
+                      ['watermarked-800', '1920×800 Watermarked'],
+                      ['clean-1080', '1920×1080 Full HD (16:9)'],
+                      ['live-dom', 'Live Responsive HTML/CSS'],
+                    ] as const
+                  ).map(([key, label]) => (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => setBannerVariant(key)}
+                      className={`btn-press text-[11px] px-3 py-1 rounded-full font-bold uppercase tracking-wider ${
+                        bannerVariant === key
+                          ? 'bg-[#183D2D] text-[#F7F3E8] shadow-2xs'
+                          : 'bg-white/70 text-[#183D2D]/80 hover:bg-white hover:text-[#183D2D]'
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
                 </div>
-              )}
+                <a
+                  href="#design-sample-breakdown"
+                  className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#183D2D] hover:text-[#B59645] underline underline-offset-4"
+                >
+                  View Before / After Comparison ↓
+                </a>
+              </div>
             </div>
           )}
 
